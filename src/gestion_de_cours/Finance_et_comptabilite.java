@@ -1,6 +1,8 @@
 package gestion_de_cours;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -17,7 +19,6 @@ public class Finance_et_comptabilite extends JPanel {
     private JLabel iconLabel;
     private JTable table1;
     private JTextField searchField;
-    private Timer timer;
     private int scrollPosition;
     private JScrollPane scrollPane;
 
@@ -28,6 +29,7 @@ public class Finance_et_comptabilite extends JPanel {
 
     private void initComponents() {
         setLayout(null);
+        
 
         JButton Button1 = new JButton("Nouveau");
         Button1.setBackground(new Color(0, 128, 255));
@@ -77,7 +79,7 @@ public class Finance_et_comptabilite extends JPanel {
         add(scrollPane);
 
         ButtonRenderer buttonRenderer = new ButtonRenderer();
-        ButtonEditor buttonEditor = new ButtonEditor(new JCheckBox());
+        ButtonEditor buttonEditor = new ButtonEditor(new JButton());
         table1.getColumnModel().getColumn(6).setCellRenderer(buttonRenderer);
         table1.getColumnModel().getColumn(6).setCellEditor(buttonEditor);
         table1.getColumnModel().getColumn(7).setCellRenderer(buttonRenderer);
@@ -95,11 +97,40 @@ public class Finance_et_comptabilite extends JPanel {
         });
         add(searchField, BorderLayout.NORTH);
 
-        // Création du timer
-        timer = new Timer(500, new ActionListener() {
+        // Ajout de l'écouteur de modification de texte pour la recherche
+        textbox1.getDocument().addDocumentListener(new DocumentListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void insertUpdate(DocumentEvent e) {
                 AfficherDonnees();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                AfficherDonnees();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                AfficherDonnees();
+            }
+        });
+
+        // Ajout de l'écouteur de clic de souris
+        table1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int col = table1.columnAtPoint(e.getPoint());
+                if (col == 6) {
+                    int row = table1.rowAtPoint(e.getPoint());
+                    if (row >= 0) {
+                    	new Fiche().setVisible(true);
+                    }
+                } else if (col == 8) {
+                    int row = table1.rowAtPoint(e.getPoint());
+                    if (row >= 0) {
+                        supprimerEntree(row); // Appel de la méthode pour supprimer l'entrée
+                    }
+                }
             }
         });
 
@@ -107,14 +138,14 @@ public class Finance_et_comptabilite extends JPanel {
         AfficherDonnees();
     }
 
-    // Fonction pour afficher les données dans la table
+    // Méthode pour afficher les données dans la table
     private void AfficherDonnees() {
         scrollPosition = scrollPane.getVerticalScrollBar().getValue();
 
         String searchTerm = textbox1.getText();
         String query = "SELECT ordre, CODE, Nom_Complet, Date_inscription, Date_debut, Prix FROM finance WHERE Nom_Complet LIKE ? ORDER BY ordre";
         DefaultTableModel model = new DefaultTableModel();
-        model.setColumnIdentifiers(new Object[]{"Ordre", "Code", "Nom complet","Date d'inscription","Date debut", "Prix", "", "",""});
+        model.setColumnIdentifiers(new Object[]{"Ordre", "Code", "Nom complet","Date d'inscription","Date debut", "Prix", "", "", ""});
 
         try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/sfe", "amineznb", "123654789582");
              PreparedStatement statement = connection.prepareStatement(query)) {
@@ -147,8 +178,23 @@ public class Finance_et_comptabilite extends JPanel {
             table1.setRowSelectionInterval(scrollPosition, scrollPosition);
             scrollPane.getVerticalScrollBar().setValue(scrollPosition * table1.getRowHeight());
         }
+    }
 
-        timer.restart();
+    // Méthode pour supprimer une entrée de la base de données
+    private void supprimerEntree(int rowIndex) {
+        String code = (String) table1.getValueAt(rowIndex, 1); // Récupération du code dans la colonne 1 (0-indexed)
+        String query = "DELETE FROM finance WHERE CODE = ?";
+        
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/sfe", "amineznb", "123654789582");
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setString(1, code);
+            statement.executeUpdate();
+            AfficherDonnees(); 
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Erreur : " + ex.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
+        }
     }
 }
-
