@@ -123,7 +123,7 @@ public class Finance_et_comptabilite extends JPanel {
                 if (col == 6) {
                     int row = table1.rowAtPoint(e.getPoint());
                     if (row >= 0) {
-                    	new Fiche().setVisible(true);
+                    	new Fiche_finance().setVisible(true);
                     }
                 } else if (col == 8) {
                     int row = table1.rowAtPoint(e.getPoint());
