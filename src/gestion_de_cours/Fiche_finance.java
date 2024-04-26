@@ -428,8 +428,8 @@ public class Fiche_finance extends JFrame {
 
 	        // Connexion à la base de données (ex. MySQL)
 	        String url = "jdbc:mysql://localhost/sfe";
-	        String utilisateur = "amineznb";
-	        String motDePasse = "123654789582";
+	        String utilisateur = "root";
+	        String motDePasse = "";
 	        
 	        Connection connexion = DriverManager.getConnection(url, utilisateur, motDePasse);
 
