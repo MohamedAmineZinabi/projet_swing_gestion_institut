@@ -136,8 +136,8 @@ public class Finance_et_comptabilite extends JPanel {
 
                     // Connexion à la base de données MySQL
                     String connectionStr = "jdbc:mysql://localhost/sfe";
-                    String username = "amineznb";
-                    String password = "123654789582";
+                    String username = "root";
+                    String password = "";
                     
                     try (Connection connection = DriverManager.getConnection(connectionStr, username, password)) {
                         // Préparer la requête SQL paramétrée pour récupérer les détails de finance basés sur l'ordre
@@ -215,7 +215,7 @@ public class Finance_et_comptabilite extends JPanel {
         DefaultTableModel model = new DefaultTableModel();
         model.setColumnIdentifiers(new Object[]{"Ordre", "Code", "Nom complet","Date d'inscription","Date debut", "Prix", "", "", ""});
 
-        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/sfe", "amineznb", "123654789582");
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/sfe", "root", "");
              PreparedStatement statement = connection.prepareStatement(query)) {
 
             statement.setString(1, "%" + searchTerm + "%");
@@ -253,7 +253,7 @@ public class Finance_et_comptabilite extends JPanel {
         String code = (String) table1.getValueAt(rowIndex, 1); // Récupération du code dans la colonne 1 (0-indexed)
         String query = "DELETE FROM finance WHERE CODE = ?";
         
-        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/sfe", "amineznb", "123654789582");
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/sfe", "root", "");
              PreparedStatement statement = connection.prepareStatement(query)) {
 
             statement.setString(1, code);
