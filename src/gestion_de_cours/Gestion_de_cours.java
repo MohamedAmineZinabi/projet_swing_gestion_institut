@@ -251,8 +251,8 @@ public class Gestion_de_cours  {
         String password = new String(passwordField.getPassword());
 
         String connectionString = "jdbc:mysql://localhost/sfe";
-        String dbUser = "amineznb";
-        String dbPassword = "123654789582";
+        String dbUser = "root";
+        String dbPassword = "";
 
         try {
             Connection conn = DriverManager.getConnection(connectionString, dbUser, dbPassword);
