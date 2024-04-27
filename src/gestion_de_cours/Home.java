@@ -30,6 +30,7 @@ public class Home extends JFrame {
     private Timer timer3;
     private Gestion_de_cours gestionDeCours;
     private Finance_et_comptabilite financePanel;
+    private Compte compteFrame;
 
 
 
@@ -58,6 +59,7 @@ public class Home extends JFrame {
         setContentPane(contentPane);
         contentPane.setLayout(null);
         financePanel = new Finance_et_comptabilite();
+        compteFrame = new Compte();
        
         
 
@@ -289,9 +291,19 @@ public class Home extends JFrame {
         button19.setBackground(new Color(105, 105, 105));
         button19.setBounds(978, 71, 173, 50);
         contentPane.add(button19);
+        button19.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Effacer tout contenu précédent dans panel8
+                panel8.removeAll();
 
-       
-       
+                // Ajouter le panneau Compte à panel8
+                panel8.add(compteFrame);
+
+                // Valider et redessiner le panneau
+                panel8.revalidate();
+                panel8.repaint();
+            }
+        });
         
     }
 
