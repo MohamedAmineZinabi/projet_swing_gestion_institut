@@ -36,6 +36,14 @@ public class Finance_et_comptabilite extends JPanel {
         Button1.setBackground(new Color(0, 128, 255));
         Button1.setBounds(58, 43, 89, 23);
         add(Button1);
+        // ActionListener pour le bouton "Nouveau"
+        Button1.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Création et affichage de la frame Ajout_finance
+                Ajout_finance ajoutFinanceFrame = new Ajout_finance();
+                ajoutFinanceFrame.setVisible(true);
+            }
+        });
 
         textbox1 = new JTextField();
         textbox1.setBounds(695, 36, 183, 29);
@@ -59,19 +67,19 @@ public class Finance_et_comptabilite extends JPanel {
         model.addColumn("Date");
         model.addColumn("Prix");
         model.addColumn(""); // Colonne vide pour le premier bouton
-        model.addColumn(""); // Colonne vide pour le deuxième bouton
-        model.addColumn(""); // Colonne vide pour le troisième bouton
+        model.addColumn(""); // Colonne vide pour le deuxiÃ¨me bouton
+        model.addColumn(""); // Colonne vide pour le troisiÃ¨me bouton	
 
-        table1.setModel(model); // Important : associer le modèle de données à la table
+        table1.setModel(model); // Important : associer le modÃ¨le de donnÃ©es Ã  la table
 
-        // Régler la largeur préférée des colonnes
+        // RÃ©gler la largeur prÃ©fÃ©rÃ©e des colonnes
         table1.getColumnModel().getColumn(0).setPreferredWidth(70); // Largeur de la colonne "Ordre"
         table1.getColumnModel().getColumn(1).setPreferredWidth(70); // Largeur de la colonne "Code"
         table1.getColumnModel().getColumn(2).setPreferredWidth(150); // Largeur de la colonne "Nom complet"
         table1.getColumnModel().getColumn(3).setPreferredWidth(120); // Largeur de la colonne "Date d'inscription"
         table1.getColumnModel().getColumn(4).setPreferredWidth(120); // Largeur de la colonne "Date"
         table1.getColumnModel().getColumn(5).setPreferredWidth(70);
-        // Ajout de la largeur préférée pour les colonnes vides
+        // Ajout de la largeur prÃ©fÃ©rÃ©e pour les colonnes vides
         table1.getColumnModel().getColumn(6).setPreferredWidth(50);
         table1.getColumnModel().getColumn(7).setPreferredWidth(50);
         table1.getColumnModel().getColumn(8).setPreferredWidth(50);
@@ -85,7 +93,7 @@ public class Finance_et_comptabilite extends JPanel {
             TableColumn column = columnModel.getColumn(i);
             column.setResizable(false); 
         }
-
+    /*
         ButtonRenderer buttonRenderer = new ButtonRenderer();
         ButtonEditor buttonEditor = new ButtonEditor(new JButton());
         table1.getColumnModel().getColumn(6).setCellRenderer(buttonRenderer);
@@ -94,7 +102,7 @@ public class Finance_et_comptabilite extends JPanel {
         table1.getColumnModel().getColumn(7).setCellEditor(buttonEditor);
         table1.getColumnModel().getColumn(8).setCellRenderer(buttonRenderer);
         table1.getColumnModel().getColumn(8).setCellEditor(buttonEditor);
-    
+    */
         searchField = new JTextField();
         searchField.setBackground(new Color(105, 105, 105));
         searchField.addActionListener(new ActionListener() {
@@ -105,7 +113,7 @@ public class Finance_et_comptabilite extends JPanel {
         });
         add(searchField, BorderLayout.NORTH);
 
-        // Ajout de l'écouteur de modification de texte pour la recherche
+        // Ajout de l'Ã©couteur de modification de texte pour la recherche
         textbox1.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -123,7 +131,7 @@ public class Finance_et_comptabilite extends JPanel {
             }
         });
 
-        // Ajout de l'écouteur de clic de souris
+        // Ajout de l'Ã©couteur de clic de souris
         table1.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -131,16 +139,16 @@ public class Finance_et_comptabilite extends JPanel {
                 int row = table1.rowAtPoint(e.getPoint());
                 
                 if (col == 6 && row >= 0) {
-                    String ordre = table1.getValueAt(row, 0).toString(); // Récupérer l'ordre de la colonne 0
-                    String code = table1.getValueAt(row, 1).toString(); // Récupérer le CODE de la colonne 1
+                    String ordre = table1.getValueAt(row, 0).toString(); // RÃ©cupÃ©rer l'ordre de la colonne 0
+                    String code = table1.getValueAt(row, 1).toString(); // RÃ©cupÃ©rer le CODE de la colonne 1
 
-                    // Connexion à la base de données MySQL
+                    // Connexion Ã  la base de donnÃ©es MySQL
                     String connectionStr = "jdbc:mysql://localhost/sfe";
                     String username = "root";
                     String password = "";
                     
                     try (Connection connection = DriverManager.getConnection(connectionStr, username, password)) {
-                        // Préparer la requête SQL paramétrée pour récupérer les détails de finance basés sur l'ordre
+                        // PrÃ©parer la requÃªte SQL paramÃ©trÃ©e pour rÃ©cupÃ©rer les dÃ©tails de finance basÃ©s sur l'ordre
                         String query = "SELECT CODE, Nom_Complet, Date_inscription, Date_debut, septembre, octobre, novembre, decembre, janvier, fevrier, mars, avril, mai, juin, juillet FROM finance WHERE ordre = ?";
                         
                         try (PreparedStatement statement = connection.prepareStatement(query)) {
@@ -148,7 +156,7 @@ public class Finance_et_comptabilite extends JPanel {
                             
                             try (ResultSet resultSet = statement.executeQuery()) {
                                 if (resultSet.next()) {
-                                    // Récupérer les valeurs des champs de la base de données
+                                    // RÃ©cupÃ©rer les valeurs des champs de la base de donnÃ©es
                                     String cod = resultSet.getString("CODE");
                                     String nom = resultSet.getString("Nom_Complet");
                                     String sep = resultSet.getString("septembre");
@@ -165,10 +173,10 @@ public class Finance_et_comptabilite extends JPanel {
                                     Date inscri = resultSet.getDate("Date_inscription");
                                     Date debut = resultSet.getDate("Date_debut");
 
-                                    // Créer une nouvelle instance de Fiche_finance
+                                    // CrÃ©er une nouvelle instance de Fiche_finance
                                     Fiche_finance ficheFinance = new Fiche_finance();
 
-                                    // Mettre à jour les champs de la fenêtre Fiche_finance avec les valeurs récupérées
+                                    // Mettre Ã  jour les champs de la fenÃªtre Fiche_finance avec les valeurs rÃ©cupÃ©rÃ©es
                                     ficheFinance.setTextbox1Text(cod);
                                     ficheFinance.setTextbox4Text(nom);
                                     ficheFinance.setTextbox5Text(sep);
@@ -185,7 +193,7 @@ public class Finance_et_comptabilite extends JPanel {
                                     ficheFinance.setTextbox16Text(inscri);
                                     ficheFinance.setTextbox17Text(debut);
 
-                                    // Afficher la fenêtre Fiche_finance
+                                    // Afficher la fenÃªtre Fiche_finance
                                     ficheFinance.setVisible(true);
                                 }
                             }
@@ -195,18 +203,18 @@ public class Finance_et_comptabilite extends JPanel {
                         JOptionPane.showMessageDialog(null, "Erreur : " + ex.getMessage(), "Erreur de connexion", JOptionPane.ERROR_MESSAGE);
                     }
                 } else if (col == 8 && row >= 0) {
-                    // Si la colonne cliquée est la colonne 8, appeler la méthode pour supprimer l'entrée
+                    // Si la colonne cliquÃ©e est la colonne 8, appeler la mÃ©thode pour supprimer l'entrÃ©e
                     supprimerEntree(row);
                 }
             }
         });
 
 
-        // Afficher les données au chargement
+        // Afficher les donnÃ©es au chargement
         AfficherDonnees();
     }
 
-    // Méthode pour afficher les données dans la table
+    // MÃ©thode pour afficher les donnÃ©es dans la table
     private void AfficherDonnees() {
         scrollPosition = scrollPane.getVerticalScrollBar().getValue();
 
@@ -248,9 +256,9 @@ public class Finance_et_comptabilite extends JPanel {
         }
     }
 
-    // Méthode pour supprimer une entrée de la base de données
+    // MÃ©thode pour supprimer une entrÃ©e de la base de donnÃ©es
     private void supprimerEntree(int rowIndex) {
-        String code = (String) table1.getValueAt(rowIndex, 1); // Récupération du code dans la colonne 1 (0-indexed)
+        String code = (String) table1.getValueAt(rowIndex, 1); // RÃ©cupÃ©ration du code dans la colonne 1 (0-indexed)
         String query = "DELETE FROM finance WHERE CODE = ?";
         
         try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/sfe", "root", "");
@@ -265,4 +273,8 @@ public class Finance_et_comptabilite extends JPanel {
             JOptionPane.showMessageDialog(this, "Erreur : " + ex.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
         }
     }
+    public void afficherDonnees() {
+        AfficherDonnees();
+    }
+
 }
