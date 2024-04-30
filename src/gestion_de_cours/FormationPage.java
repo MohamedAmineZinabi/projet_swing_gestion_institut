@@ -94,7 +94,7 @@ public class FormationPage extends JFrame {
             case "Informatique":
                 return Color.ORANGE;
             default:
-                return Color.GRAY; // Default color
+                return Color.GRAY; // Default
         }
     }
 
