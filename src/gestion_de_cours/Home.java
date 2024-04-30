@@ -31,6 +31,7 @@ public class Home extends JFrame {
     private Gestion_de_cours gestionDeCours;
     private Finance_et_comptabilite financePanel;
     private Compte compteFrame;
+    private FormationPage home;
 
 
 
@@ -60,6 +61,7 @@ public class Home extends JFrame {
         contentPane.setLayout(null);
         financePanel = new Finance_et_comptabilite();
         compteFrame = new Compte();
+        home = new FormationPage();
        
         
 
@@ -276,6 +278,18 @@ public class Home extends JFrame {
         panel8.add(label1);
 
         JButton button1 = new JButton("      Home");
+        button1.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		panel8.removeAll();
+
+                // Ajouter le panneau Compte à panel8
+                panel8.add(home);
+
+                // Valider et redessiner le panneau
+                panel8.revalidate();
+                panel8.repaint();
+        	}
+        });
         button1.setHorizontalAlignment(SwingConstants.LEFT);
         button1.setIcon(new ImageIcon(Home.class.getResource("/images/icons8-home-30.png")));
         button1.setForeground(Color.WHITE);
