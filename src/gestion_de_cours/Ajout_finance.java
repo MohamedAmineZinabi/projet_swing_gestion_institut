@@ -309,7 +309,6 @@ public class Ajout_finance extends JFrame {
                      String juilletValue = juillet.getText();
                      if (Ordre.getText().isEmpty() || CODE.getText().isEmpty() || Nom_Complet.getText().isEmpty() || Prix.getText().isEmpty() ||dateInscriptionValue1 == null || dateDebutValue1 == null) {
                          JOptionPane.showMessageDialog(Ajout_finance.this, "Veuillez remplir les champs importants.", "Information manquante", JOptionPane.WARNING_MESSAGE);
-                         return;
                      }
                      String connectionStr = "jdbc:mysql://localhost:3306/sfe";
                      String username = "root";
