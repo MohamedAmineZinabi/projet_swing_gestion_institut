@@ -134,7 +134,7 @@ public class FormationPage extends JPanel {
         add(formationPanel2);
 
         revalidate(); // Revalidate the layout
-        repaint(); // Repaint the panel
+        repaint();
     }
 
     public static void main(String[] args) {
@@ -146,6 +146,6 @@ public class FormationPage extends JPanel {
         frame.setVisible(true);
 
         // Example usage: Call refresh after adding members to courses
-        // formationPage.refresh();
+        // formationPage.refresh()
     }
 }
