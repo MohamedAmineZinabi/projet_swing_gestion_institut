@@ -279,9 +279,6 @@ public class Ajout_finance extends JFrame {
             contentPane.add(btn_ajout);
             btn_ajout.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-
-
-                     int ordreValue = Integer.parseInt(Ordre.getText());
                      String codeValue = CODE.getText();
                      String nomCompletValue = Nom_Complet.getText();
                        
@@ -294,8 +291,6 @@ public class Ajout_finance extends JFrame {
                      } catch (ParseException e1) {
                          e1.printStackTrace();
                      }
-
-                     double prixValue = Double.parseDouble(Prix.getText());
                      String septembreValue = septembre.getText();
                      String octobreValue = octobre.getText();
                      String novembreValue = novembre.getText();
@@ -309,7 +304,10 @@ public class Ajout_finance extends JFrame {
                      String juilletValue = juillet.getText();
                      if (Ordre.getText().isEmpty() || CODE.getText().isEmpty() || Nom_Complet.getText().isEmpty() || Prix.getText().isEmpty() ||dateInscriptionValue1 == null || dateDebutValue1 == null) {
                          JOptionPane.showMessageDialog(Ajout_finance.this, "Veuillez remplir les champs importants.", "Information manquante", JOptionPane.WARNING_MESSAGE);
+                         return;
                      }
+                     int ordreValue = Integer.parseInt(Ordre.getText());
+                     double prixValue = Double.parseDouble(Prix.getText());
                      String connectionStr = "jdbc:mysql://localhost:3306/sfe";
                      String username = "root";
                      String password = "";
