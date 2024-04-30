@@ -5,7 +5,9 @@ import java.awt.*;
 import java.sql.*;
 
 public class FormationPage extends JPanel {
+
     public FormationPage() {
+
         setBackground(new Color(64, 64, 64));
         setLayout(new GridLayout(2, 1));
 
@@ -51,6 +53,7 @@ public class FormationPage extends JPanel {
         productCard.setPreferredSize(new Dimension(250, 150));
         productCard.setLayout(new BorderLayout());
 
+        // Fetch member count each time refresh is called
         int memberCount = fetchMemberCount(courseTitle);
 
         productCard.setBackground(getColorForCourse(courseTitle));
@@ -124,6 +127,7 @@ public class FormationPage extends JPanel {
     }
 
     // Method to refresh the FormationPage
+    // Method to refresh the FormationPage
     public void refresh() {
         removeAll(); // Clear the current content
         // Rebuild the FormationPage with updated member counts
@@ -136,6 +140,7 @@ public class FormationPage extends JPanel {
         revalidate(); // Revalidate the layout
         repaint();
     }
+
 
     public static void main(String[] args) {
         FormationPage formationPage = new FormationPage();
