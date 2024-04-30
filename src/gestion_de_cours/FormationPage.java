@@ -4,49 +4,37 @@ import javax.swing.*;
 import java.awt.*;
 import java.sql.*;
 
-public class FormationPage extends JFrame {
+public class FormationPage extends JPanel {
     public FormationPage() {
-        setTitle("Formation Page");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(600, 600);
-        Color darkGray = new Color(64, 64, 64);
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new GridLayout(2, 1)); // Change layout to GridLayout
-        mainPanel.setBackground(darkGray);
+        setBackground(new Color(64, 64, 64));
+        setLayout(new GridLayout(2, 1));
 
         JPanel formationPanel1 = createFormationPanel("Formation professionnelle", "Finance et Comptabilité", "Boulangerie et Patisserie");
-        mainPanel.add(formationPanel1);
+        add(formationPanel1);
 
         JPanel formationPanel2 = createFormationPanel("Formation continue", "Langue", "Informatique");
-        mainPanel.add(formationPanel2);
-
-        add(mainPanel);
-        setVisible(true);
+        add(formationPanel2);
     }
 
     private JPanel createFormationPanel(String sectionTitle, String courseTitle1, String courseTitle2) {
         JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS)); // Use BoxLayout for vertical alignment
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         panel.setBackground(new Color(64, 64, 64));
 
-        // Title Panel
         JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         titlePanel.setBackground(new Color(64, 64, 64));
         JLabel sectionLabel = new JLabel(sectionTitle);
         sectionLabel.setFont(new Font("Arial", Font.BOLD, 30));
         sectionLabel.setForeground(Color.WHITE);
         titlePanel.add(sectionLabel);
-        // Add empty border to create space
-        titlePanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0)); // Adjust bottom padding as needed
+        titlePanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
         panel.add(titlePanel);
 
-        // Product Cards Panel
         JPanel productCardsPanel = new JPanel();
         productCardsPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 30, 5));
         productCardsPanel.setBackground(new Color(64, 64, 64));
 
-        // Create product cards based on courses
         JPanel productCard1 = createProductCard(courseTitle1);
         JPanel productCard2 = createProductCard(courseTitle2);
 
@@ -63,7 +51,6 @@ public class FormationPage extends JFrame {
         productCard.setPreferredSize(new Dimension(250, 150));
         productCard.setLayout(new BorderLayout());
 
-        // Fetch member count from database
         int memberCount = fetchMemberCount(courseTitle);
 
         productCard.setBackground(getColorForCourse(courseTitle));
@@ -94,7 +81,7 @@ public class FormationPage extends JFrame {
             case "Informatique":
                 return Color.ORANGE;
             default:
-                return Color.GRAY; // Default
+                return Color.GRAY;
         }
     }
 
@@ -133,10 +120,32 @@ public class FormationPage extends JFrame {
                 ex.printStackTrace();
             }
         }
-        return 0; // Return 0 if count couldn't be fetched
+        return 0;
+    }
+
+    // Method to refresh the FormationPage
+    public void refresh() {
+        removeAll(); // Clear the current content
+        // Rebuild the FormationPage with updated member counts
+        JPanel formationPanel1 = createFormationPanel("Formation professionnelle", "Finance et Comptabilité", "Boulangerie et Patisserie");
+        add(formationPanel1);
+
+        JPanel formationPanel2 = createFormationPanel("Formation continue", "Langue", "Informatique");
+        add(formationPanel2);
+
+        revalidate(); // Revalidate the layout
+        repaint(); // Repaint the panel
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(FormationPage::new);
+        FormationPage formationPage = new FormationPage();
+        JFrame frame = new JFrame("Formation Page");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(600, 600);
+        frame.add(formationPage);
+        frame.setVisible(true);
+
+        // Example usage: Call refresh after adding members to courses
+        // formationPage.refresh();
     }
 }
