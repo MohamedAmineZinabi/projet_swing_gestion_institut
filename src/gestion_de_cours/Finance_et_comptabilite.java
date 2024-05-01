@@ -69,9 +69,9 @@ public class Finance_et_comptabilite extends JPanel {
         model.addColumn("Prix");
         model.addColumn(""); // Colonne vide pour le premier bouton
         model.addColumn(""); // Colonne vide pour le deuxiÃ¨me bouton
-        model.addColumn("");
+        model.addColumn(""); // Colonne vide pour le troisiÃ¨me bouton
 
-        table1.setModel(model); // Important : associer le modÃ¨le de donnÃ©es Ã  la table
+        table1.setModel(model); // Important : associer le modÃ¨le de donnÃ©es Ã  la table
 
         // RÃ©gler la largeur prÃ©fÃ©rÃ©e des colonnes
         table1.getColumnModel().getColumn(0).setPreferredWidth(70); // Largeur de la colonne "Ordre"
@@ -123,15 +123,80 @@ public class Finance_et_comptabilite extends JPanel {
             }
         });
 
-
+        // Ajout de l'Ã©couteur de clic de souris
         // Ajout de l'écouteur de clic de souris
         table1.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int col = table1.columnAtPoint(e.getPoint());
                 int row = table1.rowAtPoint(e.getPoint());
+                
+                if (col == 6 && row >= 0) {
+                    String ordre = table1.getValueAt(row, 0).toString(); // Récupérer l'ordre de la colonne 0
+                    String code = table1.getValueAt(row, 1).toString(); // Récupérer le CODE de la colonne 1
 
-                if (col == 7 && row >= 0) { // Check if "Modifier" button is clicked
+                    // Connexion à la base de données MySQL
+                    String connectionStr = "jdbc:mysql://localhost/sfe";
+                    String username = "amineznb";
+                    String password = "123654789582";
+                    
+                    try (Connection connection = DriverManager.getConnection(connectionStr, username, password)) {
+                        // Préparer la requête SQL paramétrée pour récupérer les détails de finance basés sur l'ordre
+                        String query = "SELECT CODE, Nom_Complet, Date_inscription, Date_debut, septembre, octobre, novembre, decembre, janvier, fevrier, mars, avril, mai, juin, juillet FROM finance WHERE ordre = ?";
+                        
+                        try (PreparedStatement statement = connection.prepareStatement(query)) {
+                            statement.setString(1, ordre);
+                            
+                            try (ResultSet resultSet = statement.executeQuery()) {
+                                if (resultSet.next()) {
+                                    // Récupérer les valeurs des champs de la base de données
+                                    String cod = resultSet.getString("CODE");
+                                    String nom = resultSet.getString("Nom_Complet");
+                                    String sep = resultSet.getString("septembre");
+                                    String oct = resultSet.getString("octobre");
+                                    String nov = resultSet.getString("novembre");
+                                    String dec = resultSet.getString("decembre");
+                                    String jan = resultSet.getString("janvier");
+                                    String fev = resultSet.getString("fevrier");
+                                    String mar = resultSet.getString("mars");
+                                    String avr = resultSet.getString("avril");
+                                    String mai = resultSet.getString("mai");
+                                    String jui = resultSet.getString("juin");
+                                    String juil = resultSet.getString("juillet");
+                                    Date inscri = resultSet.getDate("Date_inscription");
+                                    Date debut = resultSet.getDate("Date_debut");
+
+                                    // Créer une nouvelle instance de Fiche_finance
+                                    Fiche_finance ficheFinance = new Fiche_finance();
+
+                                    // Mettre à jour les champs de la fenêtre Fiche_finance avec les valeurs récupérées
+                                    ficheFinance.setTextbox1Text(cod);
+                                    ficheFinance.setTextbox4Text(nom);
+                                    ficheFinance.setTextbox5Text(sep);
+                                    ficheFinance.setTextbox6Text(oct);
+                                    ficheFinance.setTextbox7Text(nov);
+                                    ficheFinance.setTextbox8Text(dec);
+                                    ficheFinance.setTextbox9Text(jan);
+                                    ficheFinance.setTextbox10Text(fev);
+                                    ficheFinance.setTextbox11Text(mar);
+                                    ficheFinance.setTextbox12Text(avr);
+                                    ficheFinance.setTextbox13Text(mai);
+                                    ficheFinance.setTextbox14Text(jui);
+                                    ficheFinance.setTextbox15Text(juil);
+                                    ficheFinance.setTextbox16Text(inscri);
+                                    ficheFinance.setTextbox17Text(debut);
+
+                                    // Afficher la fenêtre Fiche_finance
+                                    ficheFinance.setVisible(true);
+                                }
+                            }
+                        }
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                        JOptionPane.showMessageDialog(null, "Erreur : " + ex.getMessage(), "Erreur de connexion", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+                else if (col == 7 && row >= 0) { // Check if "Modifier" button is clicked
                     // Get the selected row index
                     int selectedRow = table1.getSelectedRow();
 
@@ -161,8 +226,6 @@ public class Finance_et_comptabilite extends JPanel {
                 }
             }
         });
-
-
 
         // Afficher les donnÃ©es au chargement
         AfficherDonnees();
@@ -210,7 +273,7 @@ public class Finance_et_comptabilite extends JPanel {
         }
     }
 
-    // second command to push
+    // MÃ©thode pour supprimer une entrÃ©e de la base de donnÃ©es
     private void supprimerEntree(int rowIndex) {
         String code = (String) table1.getValueAt(rowIndex, 1); // RÃ©cupÃ©ration du code dans la colonne 1 (0-indexed)
         String query = "DELETE FROM finance WHERE CODE = ?";
