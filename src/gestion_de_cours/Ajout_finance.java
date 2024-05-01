@@ -19,6 +19,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -48,10 +49,10 @@ public class Ajout_finance extends JFrame {
     private JTextField juin;
     private JTextField juillet;
     private static Ajout_finance currentInstance;
-
-    /**
-     * Launch the application.
-     */
+    private JDatePickerImpl Date_Inscription;
+    private  JDatePickerImpl Date_Debut;
+    
+    
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -65,9 +66,30 @@ public class Ajout_finance extends JFrame {
         });
     }
 
-    /**
-     * Create the frame.
-     */
+   
+    boolean recordExists(int ordre, String code) {
+        String connectionStr = "jdbc:mysql://localhost:3306/sfe";
+        String username = "root";
+        String password = "";
+        
+        String query = "SELECT COUNT(*) FROM finance WHERE Ordre = ? OR Code = ?";
+        try (Connection connection = DriverManager.getConnection(connectionStr, username, password);
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, ordre);
+            statement.setString(2, code);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    int count = resultSet.getInt(1);
+                    return count > 0; 
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(Ajout_finance.this, "Error: " + ex.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+        }
+        
+        return false; 
+    }
     public Ajout_finance() {
         
          currentInstance = this;
@@ -124,12 +146,12 @@ public class Ajout_finance extends JFrame {
             Date_Inscription.setBounds(140, 208, 300, 25);
             contentPane.add(Date_Inscription);
 
-            // Label for "Date début"
-            JLabel lblNewLabel_4 = new JLabel("Date début");
+            // Label for "Date dÃ©but"
+            JLabel lblNewLabel_4 = new JLabel("Date dÃ©but");
             lblNewLabel_4.setBounds(43, 269, 74, 14);
             contentPane.add(lblNewLabel_4);
 
-            // Date picker for "Date début"
+            // Date picker for "Date dÃ©but"
             JDatePickerImpl Date_Debut = new JDatePickerImpl();
             Date_Debut.setBounds(140, 259, 300, 25);
             contentPane.add(Date_Debut);
@@ -252,29 +274,17 @@ public class Ajout_finance extends JFrame {
             juillet.setBounds(239, 510, 86, 20);
             contentPane.add(juillet);
             
+            
             JButton btn_ajout = new JButton("Ajout");
             btn_ajout.setBackground(SystemColor.inactiveCaption);
             btn_ajout.setBounds(196, 560, 113, 35);
             contentPane.add(btn_ajout);
             btn_ajout.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-
-
-                     int ordreValue = Integer.parseInt(Ordre.getText());
                      String codeValue = CODE.getText();
-                     String nomCompletValue = Nom_Complet.getText();
-
-                     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                     Date dateInscriptionValue1 = null;
-                     Date dateDebutValue1 = null;
-                     try {
-                         dateInscriptionValue1 = new Date(dateFormat.parse("01/01/2024").getTime()); // Exemple de date
-                         dateDebutValue1 = new Date(dateFormat.parse("01/01/2024").getTime()); // Exemple de date
-                     } catch (ParseException e1) {
-                         e1.printStackTrace();
-                     }
-
-                     double prixValue = Double.parseDouble(Prix.getText());
+                     String nomCompletValue = Nom_Complet.getText();  
+                     Date dateInscriptionValue1 = Date_Inscription.getDate();
+                     Date dateDebutValue1 = Date_Debut.getDate();
                      String septembreValue = septembre.getText();
                      String octobreValue = octobre.getText();
                      String novembreValue = novembre.getText();
@@ -286,11 +296,20 @@ public class Ajout_finance extends JFrame {
                      String maiValue = mai.getText();
                      String juinValue = juin.getText();
                      String juilletValue = juillet.getText();
-
+                     if (Ordre.getText().isEmpty() || CODE.getText().isEmpty() || Nom_Complet.getText().isEmpty() || Prix.getText().isEmpty() ||dateInscriptionValue1 == null || dateDebutValue1 == null) {
+                         JOptionPane.showMessageDialog(Ajout_finance.this, "Veuillez remplir les champs importants.", "Information manquante", JOptionPane.WARNING_MESSAGE);
+                         return;
+                     }
+                     int ordreValue = Integer.parseInt(Ordre.getText());
+                     double prixValue = Double.parseDouble(Prix.getText());
                      String connectionStr = "jdbc:mysql://localhost:3306/sfe";
                      String username = "root";
                      String password = "";
-
+                     if (recordExists(ordreValue, codeValue)) {
+                         JOptionPane.showMessageDialog(Ajout_finance.this, "Code ou ordre deja existant.", "Duplicate Record", JOptionPane.WARNING_MESSAGE);
+                         currentInstance.dispose();
+                         return; 
+                     }
                      try (Connection connection = DriverManager.getConnection(connectionStr, username, password)) {
                          String query = "INSERT INTO finance (Ordre, Code, Nom_Complet, Date_Inscription, Date_Debut, Prix, Septembre, Octobre, Novembre, Decembre, Janvier, Fevrier, Mars, Avril, Mai, Juin, Juillet) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                          try (PreparedStatement statement = connection.prepareStatement(query)) {
@@ -313,14 +332,16 @@ public class Ajout_finance extends JFrame {
                              statement.setString(17, juilletValue);
 
                              statement.executeUpdate();
-
+                            
                              JOptionPane.showMessageDialog(Ajout_finance.this, "Data successfully added to the database", "Success", JOptionPane.INFORMATION_MESSAGE);
+                             
                          }
                      } catch (SQLException ex) {
                          ex.printStackTrace();
                          JOptionPane.showMessageDialog(Ajout_finance.this, "Error: " + ex.getMessage(), "Addition Error", JOptionPane.ERROR_MESSAGE);
                      }
-                     currentInstance.dispose(); // Ferme la fenêtre Ajout_finance
+                   
+                     currentInstance.dispose(); 
                      
                  }
              });

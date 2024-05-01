@@ -24,10 +24,10 @@ public class JDatePickerImpl extends JPanel {
         // Mois
         monthComboBox = new JComboBox<>(new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"});
 
-        // Année (modifiable selon vos besoins)
+        // AnnÃ©e (modifiable selon vos besoins)
         yearComboBox = new JComboBox<>();
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-       for (int i = currentYear - 100 ; i <= currentYear + 100 ; i++) {
+       for (int i = currentYear - 100 ; i <= currentYear ; i++) {
             yearComboBox.addItem(i);
         }
 
@@ -36,18 +36,16 @@ public class JDatePickerImpl extends JPanel {
         add(yearComboBox);
     }
 
-    public String getDate() {
-    	int day = (int) dayComboBox.getSelectedItem();
-        int month = monthComboBox.getSelectedIndex() + 1; // Les mois sont indexés à partir de 0
+    public java.sql.Date getDate() {
+        int day = (int) dayComboBox.getSelectedItem();
+        int month = monthComboBox.getSelectedIndex(); 
         int year = (int) yearComboBox.getSelectedItem();
 
         Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month - 1, day); // Mois -1 car Calendar utilise des mois 0-indexed
+        calendar.set(year, month, day); 
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy"); // Format de date souhaité
-        String dateString = dateFormat.format(calendar.getTime());
-
-        return dateString;
+        java.util.Date utilDate = calendar.getTime();
+        return new java.sql.Date(utilDate.getTime());
     }
 
     public void setDate(Date date) {
@@ -66,3 +64,4 @@ public class JDatePickerImpl extends JPanel {
 
 
 }
+
