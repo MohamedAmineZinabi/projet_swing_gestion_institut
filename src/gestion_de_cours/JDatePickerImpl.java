@@ -27,7 +27,7 @@ public class JDatePickerImpl extends JPanel {
         // AnnÃ©e (modifiable selon vos besoins)
         yearComboBox = new JComboBox<>();
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-       for (int i = currentYear - 100 ; i <= currentYear ; i++) {
+       for (int i = currentYear - 100 ; i <= currentYear + 100 ; i++) {
             yearComboBox.addItem(i);
         }
 
