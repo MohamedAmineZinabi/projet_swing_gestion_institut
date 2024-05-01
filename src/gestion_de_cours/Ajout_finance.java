@@ -49,6 +49,8 @@ public class Ajout_finance extends JFrame {
     private JTextField juin;
     private JTextField juillet;
     private static Ajout_finance currentInstance;
+    private JDatePickerImpl Date_Inscription;
+    private  JDatePickerImpl Date_Debut;
     
     
     public static void main(String[] args) {
@@ -91,7 +93,7 @@ public class Ajout_finance extends JFrame {
     public Ajout_finance() {
         
          currentInstance = this;
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 512, 645);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -280,17 +282,9 @@ public class Ajout_finance extends JFrame {
             btn_ajout.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                      String codeValue = CODE.getText();
-                     String nomCompletValue = Nom_Complet.getText();
-                       
-                     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                     Date dateInscriptionValue1 = null;
-                     Date dateDebutValue1 = null;
-                     try {
-                         dateInscriptionValue1 = new Date(dateFormat.parse("01/01/2024").getTime()); // Exemple de date
-                         dateDebutValue1 = new Date(dateFormat.parse("01/01/2024").getTime()); // Exemple de date
-                     } catch (ParseException e1) {
-                         e1.printStackTrace();
-                     }
+                     String nomCompletValue = Nom_Complet.getText();  
+                     Date dateInscriptionValue1 = Date_Inscription.getDate();
+                     Date dateDebutValue1 = Date_Debut.getDate();
                      String septembreValue = septembre.getText();
                      String octobreValue = octobre.getText();
                      String novembreValue = novembre.getText();
