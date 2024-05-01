@@ -113,7 +113,7 @@ public class ModifierFinance extends JFrame {
         lblNewLabel_4.setBounds(43, 269, 74, 14);
         contentPane.add(lblNewLabel_4);
 
-        // Date picker for "Date début"
+        // Date picker for "Date  début"
         Date_Debut = new JTextField();
         Date_Debut.setBounds(140, 259, 300, 25);
         contentPane.add(Date_Debut);

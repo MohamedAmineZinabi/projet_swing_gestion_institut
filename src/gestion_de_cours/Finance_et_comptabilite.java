@@ -69,7 +69,7 @@ public class Finance_et_comptabilite extends JPanel {
         model.addColumn("Prix");
         model.addColumn(""); // Colonne vide pour le premier bouton
         model.addColumn(""); // Colonne vide pour le deuxiÃ¨me bouton
-        model.addColumn(""); // Colonne vide pour le troisiÃ¨me bouton
+        model.addColumn("");
 
         table1.setModel(model); // Important : associer le modÃ¨le de donnÃ©es Ã  la table
 
