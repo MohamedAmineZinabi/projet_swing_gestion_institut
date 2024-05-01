@@ -123,7 +123,7 @@ public class Finance_et_comptabilite extends JPanel {
             }
         });
 
-        // Ajout de l'Ã©couteur de clic de souris
+
         // Ajout de l'écouteur de clic de souris
         table1.addMouseListener(new MouseAdapter() {
             @Override
