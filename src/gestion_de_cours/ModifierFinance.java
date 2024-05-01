@@ -7,9 +7,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.sql.Date;
+
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -83,7 +81,7 @@ public class ModifierFinance extends JFrame {
 
         Modifier = new JLabel();
         Modifier.setFont(new Font("Tahoma", Font.PLAIN, 18));
-        Modifier.setOpaque(true); // Set the JLabel to be opaque
+        Modifier.setOpaque(true);
         Modifier.setBackground(Color.GRAY);
         Modifier.setForeground(Color.WHITE);
         Modifier.setText("Modifier");
