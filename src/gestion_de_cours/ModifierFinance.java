@@ -48,7 +48,7 @@ public class ModifierFinance extends JFrame {
             }
         });
     }
-
+// this comment to repush
     /**
      * Create the frame.
      */

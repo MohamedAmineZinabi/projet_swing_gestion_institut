@@ -210,7 +210,7 @@ public class Finance_et_comptabilite extends JPanel {
         }
     }
 
-    // MÃ©thode pour supprimer une entrÃ©e de la base de donnÃ©es
+    // second command to push
     private void supprimerEntree(int rowIndex) {
         String code = (String) table1.getValueAt(rowIndex, 1); // RÃ©cupÃ©ration du code dans la colonne 1 (0-indexed)
         String query = "DELETE FROM finance WHERE CODE = ?";
