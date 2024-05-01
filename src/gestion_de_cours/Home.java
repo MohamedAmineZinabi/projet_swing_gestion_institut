@@ -383,7 +383,7 @@ public class Home extends JFrame {
         }
     }
     private void button1_Click() {
-        // Refresh the FormationPage when "Home" button is clicked
+        // Refresh the FormationPage when "Home" button is clickeedd
         home.refresh();
     }
     private void button9_Click() {

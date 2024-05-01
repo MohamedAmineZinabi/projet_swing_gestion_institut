@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.Vector;
 
+
 public class Finance_et_comptabilite extends JPanel {
     private JTextField textbox1;
     private ImageIcon icon;
@@ -31,7 +32,7 @@ public class Finance_et_comptabilite extends JPanel {
 
     private void initComponents() {
         setLayout(null);
-        
+
         JButton Button1 = new JButton("Nouveau");
         Button1.setBackground(new Color(0, 128, 255));
         Button1.setBounds(58, 43, 89, 23);
@@ -68,7 +69,7 @@ public class Finance_et_comptabilite extends JPanel {
         model.addColumn("Prix");
         model.addColumn(""); // Colonne vide pour le premier bouton
         model.addColumn(""); // Colonne vide pour le deuxiÃ¨me bouton
-        model.addColumn(""); // Colonne vide pour le troisiÃ¨me bouton	
+        model.addColumn("");
 
         table1.setModel(model); // Important : associer le modÃ¨le de donnÃ©es Ã  la table
 
@@ -80,29 +81,20 @@ public class Finance_et_comptabilite extends JPanel {
         table1.getColumnModel().getColumn(4).setPreferredWidth(120); // Largeur de la colonne "Date"
         table1.getColumnModel().getColumn(5).setPreferredWidth(70);
         // Ajout de la largeur prÃ©fÃ©rÃ©e pour les colonnes vides
-        table1.getColumnModel().getColumn(6).setPreferredWidth(50);
-        table1.getColumnModel().getColumn(7).setPreferredWidth(50);
-        table1.getColumnModel().getColumn(8).setPreferredWidth(50);
+        table1.getColumnModel().getColumn(6).setPreferredWidth(80);
+        table1.getColumnModel().getColumn(7).setPreferredWidth(80);
+        table1.getColumnModel().getColumn(8).setPreferredWidth(80);
 
-        scrollPane = new JScrollPane(table1); 
-        scrollPane.setBounds(68, 106, 870, 372); 
+        scrollPane = new JScrollPane(table1);
+        scrollPane.setBounds(68, 106, 870, 372);
         add(scrollPane);
-        
+
         TableColumnModel columnModel = table1.getColumnModel();
         for (int i = 0; i < columnModel.getColumnCount(); i++) {
             TableColumn column = columnModel.getColumn(i);
-            column.setResizable(false); 
+            column.setResizable(false);
         }
-    /*
-        ButtonRenderer buttonRenderer = new ButtonRenderer();
-        ButtonEditor buttonEditor = new ButtonEditor(new JButton());
-        table1.getColumnModel().getColumn(6).setCellRenderer(buttonRenderer);
-        table1.getColumnModel().getColumn(6).setCellEditor(buttonEditor);
-        table1.getColumnModel().getColumn(7).setCellRenderer(buttonRenderer);
-        table1.getColumnModel().getColumn(7).setCellEditor(buttonEditor);
-        table1.getColumnModel().getColumn(8).setCellRenderer(buttonRenderer);
-        table1.getColumnModel().getColumn(8).setCellEditor(buttonEditor);
-    */
+
         searchField = new JTextField();
         searchField.setBackground(new Color(105, 105, 105));
         searchField.addActionListener(new ActionListener() {
@@ -132,82 +124,44 @@ public class Finance_et_comptabilite extends JPanel {
         });
 
         // Ajout de l'Ã©couteur de clic de souris
+        // Ajout de l'écouteur de clic de souris
         table1.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int col = table1.columnAtPoint(e.getPoint());
                 int row = table1.rowAtPoint(e.getPoint());
-                
-                if (col == 6 && row >= 0) {
-                    String ordre = table1.getValueAt(row, 0).toString(); // RÃ©cupÃ©rer l'ordre de la colonne 0
-                    String code = table1.getValueAt(row, 1).toString(); // RÃ©cupÃ©rer le CODE de la colonne 1
 
-                    // Connexion Ã  la base de donnÃ©es MySQL
-                    String connectionStr = "jdbc:mysql://localhost/sfe";
-                    String username = "root";
-                    String password = "";
-                    
-                    try (Connection connection = DriverManager.getConnection(connectionStr, username, password)) {
-                        // PrÃ©parer la requÃªte SQL paramÃ©trÃ©e pour rÃ©cupÃ©rer les dÃ©tails de finance basÃ©s sur l'ordre
-                        String query = "SELECT CODE, Nom_Complet, Date_inscription, Date_debut, septembre, octobre, novembre, decembre, janvier, fevrier, mars, avril, mai, juin, juillet FROM finance WHERE ordre = ?";
-                        
-                        try (PreparedStatement statement = connection.prepareStatement(query)) {
-                            statement.setString(1, ordre);
-                            
-                            try (ResultSet resultSet = statement.executeQuery()) {
-                                if (resultSet.next()) {
-                                    // RÃ©cupÃ©rer les valeurs des champs de la base de donnÃ©es
-                                    String cod = resultSet.getString("CODE");
-                                    String nom = resultSet.getString("Nom_Complet");
-                                    String sep = resultSet.getString("septembre");
-                                    String oct = resultSet.getString("octobre");
-                                    String nov = resultSet.getString("novembre");
-                                    String dec = resultSet.getString("decembre");
-                                    String jan = resultSet.getString("janvier");
-                                    String fev = resultSet.getString("fevrier");
-                                    String mar = resultSet.getString("mars");
-                                    String avr = resultSet.getString("avril");
-                                    String mai = resultSet.getString("mai");
-                                    String jui = resultSet.getString("juin");
-                                    String juil = resultSet.getString("juillet");
-                                    Date inscri = resultSet.getDate("Date_inscription");
-                                    Date debut = resultSet.getDate("Date_debut");
+                if (col == 7 && row >= 0) { // Check if "Modifier" button is clicked
+                    // Get the selected row index
+                    int selectedRow = table1.getSelectedRow();
 
-                                    // CrÃ©er une nouvelle instance de Fiche_finance
-                                    Fiche_finance ficheFinance = new Fiche_finance();
+                    if (selectedRow >= 0) {
+                        // Get data from the selected row
+                        String ordre = table1.getValueAt(selectedRow, 0).toString();
+                        String code = table1.getValueAt(selectedRow, 1).toString();
+                        String nomComplet = table1.getValueAt(selectedRow, 2).toString();
+                        String dateInscription = table1.getValueAt(selectedRow, 3).toString();
+                        String dateDebut = table1.getValueAt(selectedRow, 4).toString();
+                        String prix = table1.getValueAt(selectedRow, 5).toString();
 
-                                    // Mettre Ã  jour les champs de la fenÃªtre Fiche_finance avec les valeurs rÃ©cupÃ©rÃ©es
-                                    ficheFinance.setTextbox1Text(cod);
-                                    ficheFinance.setTextbox4Text(nom);
-                                    ficheFinance.setTextbox5Text(sep);
-                                    ficheFinance.setTextbox6Text(oct);
-                                    ficheFinance.setTextbox7Text(nov);
-                                    ficheFinance.setTextbox8Text(dec);
-                                    ficheFinance.setTextbox9Text(jan);
-                                    ficheFinance.setTextbox10Text(fev);
-                                    ficheFinance.setTextbox11Text(mar);
-                                    ficheFinance.setTextbox12Text(avr);
-                                    ficheFinance.setTextbox13Text(mai);
-                                    ficheFinance.setTextbox14Text(jui);
-                                    ficheFinance.setTextbox15Text(juil);
-                                    ficheFinance.setTextbox16Text(inscri);
-                                    ficheFinance.setTextbox17Text(debut);
+                        // Create an instance of ModifierFinance
+                        ModifierFinance modifierFinance = new ModifierFinance();
 
-                                    // Afficher la fenÃªtre Fiche_finance
-                                    ficheFinance.setVisible(true);
-                                }
-                            }
-                        }
-                    } catch (SQLException ex) {
-                        ex.printStackTrace();
-                        JOptionPane.showMessageDialog(null, "Erreur : " + ex.getMessage(), "Erreur de connexion", JOptionPane.ERROR_MESSAGE);
+                        // Set the ancient data in ModifierFinance
+                        modifierFinance.setAncientData(ordre, code, nomComplet,dateInscription,dateDebut, prix);
+
+                        // Display the ModifierFinance window
+                        modifierFinance.setVisible(true);
+                    } else {
+                        JOptionPane.showMessageDialog(Finance_et_comptabilite.this, "Veuillez sélectionner une ligne à modifier.", "Aucune sélection", JOptionPane.WARNING_MESSAGE);
                     }
                 } else if (col == 8 && row >= 0) {
-                    // Si la colonne cliquÃ©e est la colonne 8, appeler la mÃ©thode pour supprimer l'entrÃ©e
+                    // Si la colonne cliquée est la colonne 8, appeler la méthode pour supprimer l'entrée
                     supprimerEntree(row);
                 }
             }
         });
+
 
 
         // Afficher les donnÃ©es au chargement
@@ -260,13 +214,13 @@ public class Finance_et_comptabilite extends JPanel {
     private void supprimerEntree(int rowIndex) {
         String code = (String) table1.getValueAt(rowIndex, 1); // RÃ©cupÃ©ration du code dans la colonne 1 (0-indexed)
         String query = "DELETE FROM finance WHERE CODE = ?";
-        
+
         try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/sfe", "root", "");
              PreparedStatement statement = connection.prepareStatement(query)) {
 
             statement.setString(1, code);
             statement.executeUpdate();
-            AfficherDonnees(); 
+            AfficherDonnees();
 
         } catch (SQLException ex) {
             ex.printStackTrace();
