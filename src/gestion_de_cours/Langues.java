@@ -132,23 +132,23 @@ public class Langues extends JPanel {
             public void mouseClicked(MouseEvent e) {
                 int col = table1.columnAtPoint(e.getPoint());
                 int row = table1.rowAtPoint(e.getPoint());
-                
+
                 if (col == 7 && row >= 0) {
                     String ordre = table1.getValueAt(row, 0).toString(); // Récupérer l'ordre de la colonne 0
                     String code = table1.getValueAt(row, 1).toString(); // Récupérer le CODE de la colonne 1
 
                     // Connexion à la base de données MySQL
                     String connectionStr = "jdbc:mysql://localhost/sfe";
-                    String username = "amineznb";
-                    String password = "123654789582";
-                    
+                    String username = "root";
+                    String password = "";
+
                     try (Connection connection = DriverManager.getConnection(connectionStr, username, password)) {
                         // Préparer la requête SQL paramétrée pour récupérer les détails de finance basés sur l'ordre
                         String query = "SELECT CODE, Nom_Complet, Date_inscription, Date_debut, langue, septembre, octobre, novembre, decembre, janvier, fevrier, mars, avril, mai, juin, juillet FROM langues WHERE ordre = ?";
-                        
+
                         try (PreparedStatement statement = connection.prepareStatement(query)) {
                             statement.setString(1, ordre);
-                            
+
                             try (ResultSet resultSet = statement.executeQuery()) {
                                 if (resultSet.next()) {
                                     // Récupérer les valeurs des champs de la base de données
@@ -214,14 +214,14 @@ public class Langues extends JPanel {
                         String lang = table1.getValueAt(selectedRow, 5).toString();
                         String prix = table1.getValueAt(selectedRow, 6).toString();
 
-                        // Create an instance of ModifierFinance
-                        ModifierInformatique modifierInformatique = new ModifierInformatique();
+                        // Create an instance of ModifierLangues
+                        ModifierLangues modifierLangues = new ModifierLangues();
 
-                        // Set the ancient data in ModifierFinance
-                        modifierInformatique.setAncientData(ordre, code, nomComplet,dateInscription,dateDebut, lang, prix);
+                        // Set the ancient data in ModifierLangues
+                        modifierLangues.setAncientData(ordre, code, nomComplet, dateInscription, dateDebut, lang, prix);
 
-                        // Display the ModifierFinance window
-                        modifierInformatique.setVisible(true);
+                        // Display the ModifierLangues window
+                        modifierLangues.setVisible(true);
                     } else {
                         JOptionPane.showMessageDialog(Langues.this, "Veuillez sélectionner une ligne à modifier.", "Aucune sélection", JOptionPane.WARNING_MESSAGE);
                     }
@@ -231,6 +231,7 @@ public class Langues extends JPanel {
                 }
             }
         });
+
 
         // Afficher les donnÃ©es au chargement
         AfficherDonnees();

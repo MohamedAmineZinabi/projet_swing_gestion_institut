@@ -130,23 +130,23 @@ public class Informatique extends JPanel {
             public void mouseClicked(MouseEvent e) {
                 int col = table1.columnAtPoint(e.getPoint());
                 int row = table1.rowAtPoint(e.getPoint());
-                
+
                 if (col == 6 && row >= 0) {
                     String ordre = table1.getValueAt(row, 0).toString(); // Récupérer l'ordre de la colonne 0
                     String code = table1.getValueAt(row, 1).toString(); // Récupérer le CODE de la colonne 1
 
                     // Connexion à la base de données MySQL
                     String connectionStr = "jdbc:mysql://localhost/sfe";
-                    String username = "amineznb";
-                    String password = "123654789582";
-                    
+                    String username = "root";
+                    String password = "";
+
                     try (Connection connection = DriverManager.getConnection(connectionStr, username, password)) {
                         // Préparer la requête SQL paramétrée pour récupérer les détails de finance basés sur l'ordre
                         String query = "SELECT CODE, Nom_Complet, Date_inscription, Date_debut, septembre, octobre, novembre, decembre, janvier, fevrier, mars, avril, mai, juin, juillet FROM informatique WHERE ordre = ?";
-                        
+
                         try (PreparedStatement statement = connection.prepareStatement(query)) {
                             statement.setString(1, ordre);
-                            
+
                             try (ResultSet resultSet = statement.executeQuery()) {
                                 if (resultSet.next()) {
                                     // Récupérer les valeurs des champs de la base de données
@@ -195,8 +195,7 @@ public class Informatique extends JPanel {
                         ex.printStackTrace();
                         JOptionPane.showMessageDialog(null, "Erreur : " + ex.getMessage(), "Erreur de connexion", JOptionPane.ERROR_MESSAGE);
                     }
-                }
-                else if (col == 7 && row >= 0) { // Check if "Modifier" button is clicked
+                } else if (col == 7 && row >= 0) { // Check if "Modifier" button is clicked
                     // Get the selected row index
                     int selectedRow = table1.getSelectedRow();
 
@@ -209,13 +208,13 @@ public class Informatique extends JPanel {
                         String dateDebut = table1.getValueAt(selectedRow, 4).toString();
                         String prix = table1.getValueAt(selectedRow, 5).toString();
 
-                        // Create an instance of ModifierFinance
+                        // Create an instance of ModifierInformatique
                         ModifierInformatique modifierInformatique = new ModifierInformatique();
 
-                        // Set the ancient data in ModifierFinance
-                        modifierInformatique.setAncientData(ordre, code, nomComplet,dateInscription,dateDebut, prix);
+                        // Set the ancient data in ModifierInformatique
+                        modifierInformatique.setAncientData(ordre, code, nomComplet, dateInscription, dateDebut, prix);
 
-                        // Display the ModifierFinance window
+                        // Display the ModifierInformatique window
                         modifierInformatique.setVisible(true);
                     } else {
                         JOptionPane.showMessageDialog(Informatique.this, "Veuillez sélectionner une ligne à modifier.", "Aucune sélection", JOptionPane.WARNING_MESSAGE);
@@ -226,6 +225,7 @@ public class Informatique extends JPanel {
                 }
             }
         });
+
 
         // Afficher les donnÃ©es au chargement
         AfficherDonnees();
