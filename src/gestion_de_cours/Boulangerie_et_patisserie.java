@@ -130,7 +130,7 @@ public class Boulangerie_et_patisserie extends JPanel {
             public void mouseClicked(MouseEvent e) {
                 int col = table1.columnAtPoint(e.getPoint());
                 int row = table1.rowAtPoint(e.getPoint());
-                
+
                 if (col == 6 && row >= 0) {
                     String ordre = table1.getValueAt(row, 0).toString(); // Récupérer l'ordre de la colonne 0
                     String code = table1.getValueAt(row, 1).toString(); // Récupérer le CODE de la colonne 1
@@ -139,14 +139,14 @@ public class Boulangerie_et_patisserie extends JPanel {
                     String connectionStr = "jdbc:mysql://localhost/sfe";
                     String username = "amineznb";
                     String password = "123654789582";
-                    
+
                     try (Connection connection = DriverManager.getConnection(connectionStr, username, password)) {
                         // Préparer la requête SQL paramétrée pour récupérer les détails de finance basés sur l'ordre
                         String query = "SELECT CODE, Nom_Complet, Date_inscription, Date_debut, septembre, octobre, novembre, decembre, janvier, fevrier, mars, avril, mai, juin, juillet FROM boulangerie WHERE ordre = ?";
-                        
+
                         try (PreparedStatement statement = connection.prepareStatement(query)) {
                             statement.setString(1, ordre);
-                            
+
                             try (ResultSet resultSet = statement.executeQuery()) {
                                 if (resultSet.next()) {
                                     // Récupérer les valeurs des champs de la base de données
@@ -166,10 +166,10 @@ public class Boulangerie_et_patisserie extends JPanel {
                                     Date inscri = resultSet.getDate("Date_inscription");
                                     Date debut = resultSet.getDate("Date_debut");
 
-                                    // Créer une nouvelle instance de Fiche_finance
+                                    // Créer une nouvelle instance de Fiche_boulangerie
                                     Fiche_boulangerie ficheBoulangerie = new Fiche_boulangerie();
 
-                                    // Mettre à jour les champs de la fenêtre Fiche_finance avec les valeurs récupérées
+                                    // Mettre à jour les champs de la fenêtre Fiche_boulangerie avec les valeurs récupérées
                                     ficheBoulangerie.setTextbox1Text(cod);
                                     ficheBoulangerie.setTextbox4Text(nom);
                                     ficheBoulangerie.setTextbox5Text(sep);
@@ -186,7 +186,6 @@ public class Boulangerie_et_patisserie extends JPanel {
                                     ficheBoulangerie.setTextbox16Text(inscri);
                                     ficheBoulangerie.setTextbox17Text(debut);
 
-                                    
                                     ficheBoulangerie.setVisible(true);
                                 }
                             }
@@ -209,13 +208,13 @@ public class Boulangerie_et_patisserie extends JPanel {
                         String dateDebut = table1.getValueAt(selectedRow, 4).toString();
                         String prix = table1.getValueAt(selectedRow, 5).toString();
 
-                        // Create an instance of ModifierFinance
+                        // Create an instance of ModifierBoulangerie
                         ModifierBoulangerie modifierBoulangerie = new ModifierBoulangerie();
 
-                        // Set the ancient data in ModifierFinance
-                         modifierBoulangerie.setAncientData(ordre, code, nomComplet,dateInscription,dateDebut, prix);
+                        // Set the ancient data in ModifierBoulangerie
+                        modifierBoulangerie.setAncientData(ordre, code, nomComplet, dateInscription, dateDebut, prix);
 
-                        // Display the ModifierFinance window
+                        // Display the ModifierBoulangerie window
                         modifierBoulangerie.setVisible(true);
                     } else {
                         JOptionPane.showMessageDialog(Boulangerie_et_patisserie.this, "Veuillez sélectionner une ligne à modifier.", "Aucune sélection", JOptionPane.WARNING_MESSAGE);
@@ -226,6 +225,7 @@ public class Boulangerie_et_patisserie extends JPanel {
                 }
             }
         });
+
 
         // Afficher les donnÃ©es au chargement
         AfficherDonnees();
