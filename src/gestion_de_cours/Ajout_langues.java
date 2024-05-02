@@ -287,7 +287,7 @@ public class Ajout_langues extends JFrame {
         // Ajouter les langues à la JComboBox
         comboBox.addItem("Français");
         comboBox.addItem("Anglais");
-        comboBox.addItem("Arabe");
+        comboBox.addItem("Italien");
         comboBox.addItem("Allemand");
         comboBox.addItem("Espagnol");
         
