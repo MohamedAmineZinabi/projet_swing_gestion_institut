@@ -18,7 +18,6 @@ import javax.swing.SwingConstants;
 import javax.swing.Timer;
 
 public class Home extends JFrame {
-    private FormationPage formationPage;
 
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
@@ -51,7 +50,6 @@ public class Home extends JFrame {
     }
 
     public Home(Gestion_de_cours gestionDeCours) {
-        this.home = home;
     	this.gestionDeCours = gestionDeCours;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 1196, 739);
@@ -213,6 +211,22 @@ public class Home extends JFrame {
         panel4.add(button4);
 
         JButton button5 = new JButton("<html>Boulangerie et<br>pâtisserie</html>");
+        button5.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+                // Créer une instance de Finance_et_comptabilite
+                Boulangerie_et_patisserie boulangeriePanel = new Boulangerie_et_patisserie();
+                
+                // Effacer tout contenu précédent dans panel8
+                panel8.removeAll();
+                
+                // Ajouter le panel Finance_et_comptabilite à panel8
+                panel8.add(boulangeriePanel);
+                
+                // Valider et redessiner le panneau
+                panel8.revalidate();
+                panel8.repaint();
+            }
+        });
         button5.setIcon(new ImageIcon(Home.class.getResource("/images/icons8-bread-30.png")));
         button5.setForeground(Color.WHITE);
         button5.setFont(new Font("Microsoft Sans Serif", Font.PLAIN, 13));
@@ -250,6 +264,22 @@ public class Home extends JFrame {
         panel5.add(button9);
 
         JButton button8 = new JButton("Langues");
+        button8.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+                // Créer une instance de Finance_et_comptabilite
+                Langues langue = new Langues();
+                
+                // Effacer tout contenu précédent dans panel8
+                panel8.removeAll();
+                
+                // Ajouter le panel Finance_et_comptabilite à panel8
+                panel8.add(langue);
+                
+                // Valider et redessiner le panneau
+                panel8.revalidate();
+                panel8.repaint();
+            }
+        });
         button8.setIcon(new ImageIcon(Home.class.getResource("/images/icons8-language-30.png")));
         button8.setForeground(Color.WHITE);
         button8.setFont(new Font("Microsoft Sans Serif", Font.PLAIN, 13));
@@ -258,6 +288,22 @@ public class Home extends JFrame {
         panel5.add(button8);
 
         JButton button7 = new JButton("Informatique");
+        button7.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+                // Créer une instance de Finance_et_comptabilite
+                Informatique info = new Informatique();
+                
+                // Effacer tout contenu précédent dans panel8
+                panel8.removeAll();
+                
+                // Ajouter le panel Finance_et_comptabilite à panel8
+                panel8.add(info);
+                
+                // Valider et redessiner le panneau
+                panel8.revalidate();
+                panel8.repaint();
+            }
+        });
         button7.setIcon(new ImageIcon(Home.class.getResource("/images/icons8-informatics-30.png")));
         button7.setForeground(Color.WHITE);
         button7.setFont(new Font("Microsoft Sans Serif", Font.PLAIN, 13));
@@ -282,18 +328,15 @@ public class Home extends JFrame {
         JButton button1 = new JButton("      Home");
         button1.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-                home.refresh();
+        		home.refresh();
         		panel8.removeAll();
-
 
                 // Ajouter le panneau Compte à panel8
                 panel8.add(home);
 
                 // Valider et redessiner le panneau
                 panel8.revalidate();
-
                 panel8.repaint();
-
         	}
         });
         button1.setHorizontalAlignment(SwingConstants.LEFT);
@@ -381,10 +424,6 @@ public class Home extends JFrame {
                 timer2.start();
             }
         }
-    }
-    private void button1_Click() {
-        // Refresh the FormationPage when "Home" button is clickeedd
-        home.refresh();
     }
     private void button9_Click() {
         if (!timer3.isRunning()) { // Vérifie si le timer n'est pas déjà en cours
