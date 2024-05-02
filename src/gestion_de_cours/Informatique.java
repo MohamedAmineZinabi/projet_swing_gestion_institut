@@ -41,8 +41,8 @@ public class Informatique extends JPanel {
         Button1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // Création et affichage de la frame Ajout_finance
-                Ajout_finance ajoutFinanceFrame = new Ajout_finance();
-                ajoutFinanceFrame.setVisible(true);
+                Ajout_informatique ajoutInformatiqueFrame = new Ajout_informatique();
+                ajoutInformatiqueFrame.setVisible(true);
             }
         });
 
