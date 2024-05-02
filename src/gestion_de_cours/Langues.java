@@ -41,8 +41,8 @@ public class Langues extends JPanel {
         Button1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // Création et affichage de la frame Ajout_finance
-                Ajout_finance ajoutFinanceFrame = new Ajout_finance();
-                ajoutFinanceFrame.setVisible(true);
+                Ajout_langues ajoutLangueFrame = new Ajout_langues();
+                ajoutLangueFrame.setVisible(true);
             }
         });
 
